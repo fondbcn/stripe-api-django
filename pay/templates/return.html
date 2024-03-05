@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+{%include 'navbar.html'%}
+	<div id="wrap">
+		<div id="success" class="hidden">
+			<img id="succes-icon" src="https://icons.veryicon.com/png/o/miscellaneous/8atour/success-35.png">
+			<p>We appreciate your business! <span id="customer-email"></span></p>
+		</div>
+	</div>
+	<script>
+		initialize()
+		async function initialize() {
+		  const queryString = window.location.search
+		  const urlParams = new URLSearchParams(queryString)
+		  const sessionId = urlParams.get('session_id')
+		  const response = await fetch(`/session-stat?session_id=${sessionId}`)
+		  const session = await response.json()
+
+		  if (session.status == 'open') {
+			window.replace('http://localhost:8000/cart')
+		  } else if (session.status == 'complete') {
+			document.getElementById('success').classList.remove('hidden')
+			document.getElementById('customer-email').textContent = session.customer_email
+		  }
+		}
+	</script>
+{% endblock content %}

@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block content %}
+	  <div class="col-6">
+      <div class="card mx-5 shadow" style="border-radius: 10px; border:none; ">
+        <div class="card-body">
+		<form id="bank-form" method="post" action="{% url 'bank-con' %}">
+			{% csrf_token %}
+			<label for="name">Cardholder Name</label>
+			<input type="text" id="name" name="name" class="card-input">
+			<label for="email">Email</label>
+			<input type="text" id="email" name="email" class="card-input">
+			<label for="card-element">Card details</label>
+			<div id="card-element" class="card-input"></div>
+			<label for="card-errors" role="alert"></label>
+			<div id="card-errors" role="alert"></div>
+			<button type="submit">Check</button>
+		</form>
+		</div>
+		</div>
+	  </div>
+	  </div>
+	  <br/>
+	  <style>
+		body {
+		  font-family: 'Arial', sans-serif;
+		  background-color: #f4f4f4;
+		  margin: 0;
+		  display: flex;
+		  justify-content: center;
+		  align-items: center;
+		  height: 100vh;
+		}
+
+		.card-form {
+		  background-color: #fff;
+		  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		  border-radius: 8px;
+		  padding: 20px;
+		  width: 300px;
+		  text-align: center;
+		}
+
+		.card-input {
+		  width: 100%;
+		  padding: 10px;
+		  margin-bottom: 15px;
+		  box-sizing: border-box;
+		}
+
+		.card-expiry-cvc {
+		  display: flex;
+		  gap: 10px;
+		}
+	  </style>
+	  <script>
+		var stripe = Stripe('pk_test_51OOFpIJODblskrVixPPy0G5xSBHpc5LDX6ovbnBBFnvbjnvyWcYwxW1u1nKNdU9fx6XvQO4emQkCRHvsSBGc7BQC001hHsichc');
+		var elements = stripe.elements();
+		var card = elements.create('card');
+		card.mount('#card-element');
+		var form = document.getElementById('bank-form');
+		var errorElement = document.getElementById('card-errors');
+		form.addEventListener('submit', function(event) {
+			event.preventDefault();
+			stripe.createToken(card).then(function(result) {
+				if (result.error) {
+					errorElement.textContent = result.error.message;
+				} else {
+					var tokenInput = document.createElement('input');
+					tokenInput.setAttribute('type', 'hidden');
+					tokenInput.setAttribute('name', 'stripeToken');
+					tokenInput.setAttribute('value', result.token.id);
+					form.appendChild(tokenInput);
+					form.submit();
+				}
+			});
+		});
+	</script>
+{% endblock content %}

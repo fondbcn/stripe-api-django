@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+{%include 'navbar.html'%}
+	<div class="wrap">
+		<form method="post" action="." enctype="multipart/form-data">
+		   {%csrf_token%}
+		   <div class="">
+			  {{form.as_p}}
+		   </div>
+		   {%if form.errors or form.non_field_errors%}
+			  <div class="">
+				{%for f in field%}
+				  {{f.errors}}
+				{%endfor%}
+			  </div>
+		   {%endif%}
+		   <button class="">Add product</button>
+		</form>
+	</div>
+{% endblock content %}

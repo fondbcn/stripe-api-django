@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{%include 'navbar.html'%}
+	<div class="wrap">
+      {% csrf_token %}
+      {%for prod in products.data%}
+        <div class="">
+          <div class="">
+            <h4 class="">{{prod.name}}</h4>
+            <h5 class="">{{prod.amount}} {{prod.currency}}</h5>
+          </div>
+          <button data-email="{{user.email}}" data-stripe-id="{{prod.id}}" class="plan-btn">Select</button>
+        </div>
+      {%endfor%}
+      <button id="close-stp" class="hidden">x</button>
+      <div id="checkout">
+          <!-- Checkout -->
+      </div>
+	</div>
+{% endblock content %}

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{%include 'navbar.html'%}
+	<div class="wrap">
+	{% csrf_token %}
+	{%for order in orders%}
+      <div class="prod" data-order-id="{{order.id}}" id="order_id">
+        <div class="">
+          <h5 class="">{{order.item.name}}</h5>
+          <p class="">{{order.item.price}}</p>
+		  <img src="{% static order.item.file %}" alt="Cover Attachment" />
+		</div>
+		<button data-order-id="{{order.id}}" class="del-cart-btn">Delete</button>
+		<button data-order-id="{{order.id}}" data-stripe-id="{{order.item.stripe_id}}" class="conf-cart-btn">Buy</button>
+		<button data-order-id="{{order.id}}" class="quantity-btn decrease">-</button>
+		<span data-order-id="{{order.id}}" class="item-quantity">{{order.quantity}}</span>
+		<button data-order-id="{{order.id}}" class="quantity-btn increase">+</button>
+	  </div>
+	{%endfor%}
+	<button id="close-stp" class="hidden">x</button>
+	<div id="checkout">
+		<!-- Checkout -->
+	</div>
+	<button class="conf-cart-gen">Checkout all</button>
+	</div>
+{% endblock content %}

@@ -1,0 +1,49 @@
+{%extends 'base.html'%}
+{% load static %}
+{%block content%}
+{%include 'navbar.html'%}
+<div class="wrap">
+   <div class="">
+      {% if item.file %}
+         <img src="{% static item.file %}" class="">
+      {% else %}
+         <img src="https://www.firstbenefits.org/wp-content/uploads/2017/10/placeholder-1024x1024.png" class="">
+      {% endif %}
+   </div>
+   <div class="">
+      <h1 class="">{{item.name}}</h1>
+	  <p class=""><strong>Price: </strong>{{item.price}}</p>
+	  {%if item.description%}
+	     <p class=""><strong class="">Description: </strong><br>{{item.description}}</p>
+	  {%endif%}
+      {%if request.user.is_staff %}
+	     <div class="">
+            <a href="{%url 'edit-prod' item.id%}" class="">Edit</a>
+            <a href="{%url 'delete-prod' item.id%}" class="">Delete!</a>
+         </div>
+      {%endif%}
+   </div>
+</div>
+<div class="">
+   <h2 class="">Related items</h2>
+   <div class="">
+      {%for item in related_items%}
+         <div>
+            <a href="{%url 'detail-prod' item.id%}">
+               <div>
+                  {% if item.image %}
+                    <img src="{% static item.image %}" class="">
+                  {% else %}
+                    <img src="https://www.firstbenefits.org/wp-content/uploads/2017/10/placeholder-1024x1024.png" class="">
+                  {% endif %}
+               </div>
+               <div class="">
+                  <h2 class="">{{item.name}}</h2>
+                  <p class="">Price: {{item.price}}</p>
+               </div>
+            </a>
+         </div>
+      {%endfor%}
+   </div>
+</div>
+{%endblock%}

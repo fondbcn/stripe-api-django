@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{%include 'navbar.html'%}
+	<div class="wrap">
+	{%for product in products%}
+      <div class="prod">
+        <div data-item-id="{{product.id}}" class="">
+          <h5 class="detail">{{product.name}}</h5>
+          <p class="">{{product.price}} $</p>
+		  <img src="{% static product.file %}" alt="Cover Attachment" class="detail"/>
+		</div>
+		{% csrf_token %}
+		<button data-item-id="{{product.id}}" class="add-cart-btn">Add to cart</button>
+	  </div>
+	{%endfor%}
+	</div>
+	<div class="sign-up">
+	   <div class=""><h1>Sign Up</h1>
+	   <br/>
+	   </div>
+	   <form method='post' action='.'>
+		  {%csrf_token%}
+		  {%if form1.errors%}
+			<div class="alert alert-warning alert-dismissible fade show" role="alert">
+			 {%for field in form1%}
+				{%if field.errors%}
+				   {{field.errors}}
+				{%endif%}
+			 {%endfor%}
+			 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div> 
+		  {%endif%}
+		  <div class="">
+			 {{form1.email}}
+		  </div>
+		  <div class="">
+			 {{form1.username}}
+		  </div>
+		  <div class="">
+			 {{form1.password1}}
+		  </div>
+		  <div class="">
+			 {{form1.password2}}
+		  </div>
+		  <div class="">   
+			 <div class="">
+				{{form1.check}}
+				<label class="" for="chk">accept <a href="#">conditions</a></label>
+			 </div>
+		  </div>	 
+		  <div class="">	  
+			 <button type="submit" class="" name="signup" id="btn1" disabled='true'>Submit</button>
+			 <script>
+				function func(){
+				   var chk=document.getElementById('chk')
+				   var btn=document.getElementById('btn1')
+				   if(chk.checked){
+					  btn.removeAttribute('disabled');
+				   }
+				   else{
+					  btn.disabled='true';
+				   }
+				}
+			 </script>
+		  </div>
+	   </form>
+	</div>
+	<div class="sign-in">
+	   <div class=""><h1>Log In</h1>
+	   <br/>
+	   </div>
+	   <form method='post' action='.'>
+		  {%csrf_token%}
+		  <div class="">
+			 <input type="email" class="" name="email" placeholder="email" id="login-id">
+		  </div>
+		  <div class="">
+			 <input type="password" class="" name="password" placeholder="password" id="">
+		  </div>
+		  <div class="">	  
+			 <button type="submit" class="" name="login" id="btn2">Submit</button>
+		  </div>
+	   </form>
+	</div>
+{% endblock content %}

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{%include 'navbar.html'%}
+	<div class="wrap">
+      {% csrf_token %}
+      {%for ord in orders%}
+        <div class="">
+          <div class="">
+            <h4 class="">{{ord.item.name}}</h4>
+          </div>
+          <button data-pi="{{ord.pi}}" class="refund-btn">Request refund</button>
+        </div>
+      {%endfor%}
+	</div>
+{% endblock content %}
